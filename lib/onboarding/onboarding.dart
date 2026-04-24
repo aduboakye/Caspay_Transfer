@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:shimmer/shimmer.dart';
 import 'package:blinking_border/blinking_border.dart';
 
 class Onboarding extends StatefulWidget {
@@ -12,113 +12,148 @@ class Onboarding extends StatefulWidget {
 class _OnboardingState extends State<Onboarding> {
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final screenHeight = size.height;
+    final screenWidth = size.width;
+
     return Scaffold(
       backgroundColor: const Color(0xFF0D0D0D),
       body: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const SizedBox(height: 20),
-            Row(
+        child: SingleChildScrollView(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(minHeight: screenHeight),
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                _progressBar(active: true),
-                const SizedBox(width: 8),
-                _progressBar(active: false),
-                const SizedBox(width: 8),
-                _progressBar(active: false),
-              ],
-            ),
+                SizedBox(height: screenHeight * 0.02),
 
-            const SizedBox(height: 120),
+                /// Progress Bars
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    _progressBar(active: true, width: screenWidth),
+                    SizedBox(width: screenWidth * 0.02),
+                    _progressBar(active: false, width: screenWidth),
+                    SizedBox(width: screenWidth * 0.02),
+                    _progressBar(active: false, width: screenWidth),
+                  ],
+                ),
 
-            BlinkingBorder(
-              blinkStyle: BlinkStyle.pulsing,
-              color: Colors.yellow.withOpacity(0.12),
-              pulseScale: 0.08, // 8% scale change
-              duration: Duration(milliseconds: 1500),
-              child: _blinkingcontainer(),
-            ),
+                SizedBox(height: screenHeight * 0.15),
 
-            const SizedBox(height: 40),
+                /// Blinking Container
+                BlinkingBorder(
+                  blinkStyle: BlinkStyle.pulsing,
+                  color: Colors.yellow.withOpacity(0.12),
+                  pulseScale: 0.08,
+                  duration: const Duration(milliseconds: 1500),
+                  child: _blinkingContainer(screenWidth * 0.6),
+                ),
 
-            const Text(
-              "Send Money Instantly",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
-              ),
-              textAlign: TextAlign.center,
-            ),
+                SizedBox(height: screenHeight * 0.05),
 
-            const SizedBox(height: 10),
-
-            Text(
-              "Free transfers to anyone, anywhere",
-              style: TextStyle(color: Colors.white70, fontSize: 16),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                _horizontalDot(active: true), // ● Active
-                SizedBox(width: 8),
-                _horizontalDot(active: false), // ○ Inactive
-                SizedBox(width: 8),
-                _horizontalDot(active: false), // ○ Inactive
-              ],
-            ),
-
-            const SizedBox(height: 60),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.greenAccent,
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
+                /// Title
+                Text(
+                  "Send Money Instantly",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: screenWidth * 0.07,
+                    fontWeight: FontWeight.bold,
                   ),
-                  onPressed: () {},
-                  child: const Text(
-                    "Get Started",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
+                ),
+
+                SizedBox(height: screenHeight * 0.01),
+
+                /// Subtitle
+                Text(
+                  "Free transfers to anyone, anywhere",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.white70,
+                    fontSize: screenWidth * 0.04,
+                  ),
+                ),
+
+                SizedBox(height: screenHeight * 0.015),
+
+                /// Dots
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    _horizontalDot(active: true, size: screenWidth),
+                    SizedBox(width: screenWidth * 0.02),
+                    _horizontalDot(active: false, size: screenWidth),
+                    SizedBox(width: screenWidth * 0.02),
+                    _horizontalDot(active: false, size: screenWidth),
+                  ],
+                ),
+
+                SizedBox(height: screenHeight * 0.08),
+
+                /// Button
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.06),
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.greenAccent,
+                        padding: EdgeInsets.symmetric(
+                          vertical: screenHeight * 0.02,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(
+                            screenWidth * 0.03,
+                          ),
+                        ),
+                      ),
+                      onPressed: () {},
+                      child: Shimmer.fromColors(
+                        baseColor: Colors.black,
+                        highlightColor: Colors.grey,
+                        child: Text(
+                          'Get Started',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: screenWidth * 0.05,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                 ),
-              ),
+
+                SizedBox(height: screenHeight * 0.06),
+
+                /// Login Text
+                GestureDetector(
+                  onTap: () {},
+                  child: Text(
+                    "Already have an account? Log In",
+                    style: TextStyle(
+                      color: Colors.white70,
+                      fontSize: screenWidth * 0.035,
+                    ),
+                  ),
+                ),
+
+                SizedBox(height: screenHeight * 0.05),
+              ],
             ),
-
-            const SizedBox(height: 50),
-
-            GestureDetector(
-              onTap: () {},
-              child: Text(
-                "Already have an account? Log In",
-                style: TextStyle(color: Colors.white70, fontSize: 14),
-              ),
-            ),
-
-            const SizedBox(height: 40),
-          ],
+          ),
         ),
       ),
     );
   }
 }
 
-Widget _progressBar({required bool active}) {
+/// Progress Bar
+Widget _progressBar({required bool active, required double width}) {
   return Container(
-    height: 10,
-    width: active ? 60 : 30,
+    height: width * 0.02,
+    width: active ? width * 0.15 : width * 0.08,
     decoration: BoxDecoration(
       color: active ? Colors.greenAccent : Colors.white24,
       borderRadius: BorderRadius.circular(10),
@@ -126,38 +161,39 @@ Widget _progressBar({required bool active}) {
   );
 }
 
-Widget _horizontalDot({required bool active}) {
+/// Dot
+Widget _horizontalDot({required bool active, required double size}) {
   return Container(
-    width: 8,
-    height: 8,
+    width: size * 0.02,
+    height: size * 0.02,
     decoration: BoxDecoration(
-      shape: BoxShape.circle, // Makes it a circle (dot)
+      shape: BoxShape.circle,
       color: active ? Colors.white : Colors.grey.withOpacity(0.3),
     ),
   );
 }
 
-Widget _blinkingcontainer() {
+/// Blinking Container
+Widget _blinkingContainer(double size) {
   return Container(
-    height: 300,
-    width: 300,
-
-    padding: const EdgeInsets.all(35),
+    height: size,
+    width: size,
+    padding: EdgeInsets.all(size * 0.12),
     decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(20),
+      borderRadius: BorderRadius.circular(size * 0.08),
       color: Colors.yellow.withOpacity(0.12),
       boxShadow: [
         BoxShadow(
           color: Colors.greenAccent.withOpacity(0.6),
-          blurRadius: 40,
-          spreadRadius: 8,
+          blurRadius: size * 0.15,
+          spreadRadius: size * 0.04,
         ),
       ],
     ),
     child: Image.asset(
-      "images/sheild.jpg", // <-- your shield image
-      height: 90,
-      width: 90,
+      "images/sheild.jpg",
+      height: size * 0.4,
+      width: size * 0.4,
     ),
   );
 }
