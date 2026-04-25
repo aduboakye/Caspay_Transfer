@@ -163,6 +163,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.5.0"
+  responsive_mediaquery:
+    dependency: "direct main"
+    description:
+      name: responsive_mediaquery
+      sha256: f3013e4fa3f4bf5a5f38977547bf5377ec867e647c5208ed8e9939c56655a9c4
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.0"
   shimmer:
     dependency: "direct main"
     description:

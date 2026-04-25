@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:responsive_mediaquery/responsive_mediaquery.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:blinking_border/blinking_border.dart';
 
@@ -12,34 +13,34 @@ class Onboarding extends StatefulWidget {
 class _OnboardingState extends State<Onboarding> {
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    final screenHeight = size.height;
-    final screenWidth = size.width;
+    ResponsiveMediaQuery().init(context);
+
+    final h = ResponsiveMediaQuery.verticalLength; // 1% of height
+    final w = ResponsiveMediaQuery.horizontalLength; // 1% of width
 
     return Scaffold(
       backgroundColor: const Color(0xFF0D0D0D),
       body: SafeArea(
         child: SingleChildScrollView(
-          child: ConstrainedBox(
-            constraints: BoxConstraints(minHeight: screenHeight),
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: w * 5),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox(height: screenHeight * 0.02),
+                SizedBox(height: h * 2),
 
                 /// Progress Bars
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    _progressBar(active: true, width: screenWidth),
-                    SizedBox(width: screenWidth * 0.02),
-                    _progressBar(active: false, width: screenWidth),
-                    SizedBox(width: screenWidth * 0.02),
-                    _progressBar(active: false, width: screenWidth),
+                    _progressBar(active: true, width: w),
+                    SizedBox(width: w * 2),
+                    _progressBar(active: false, width: w),
+                    SizedBox(width: w * 2),
+                    _progressBar(active: false, width: w),
                   ],
                 ),
 
-                SizedBox(height: screenHeight * 0.15),
+                SizedBox(height: h * 12),
 
                 /// Blinking Container
                 BlinkingBorder(
@@ -47,10 +48,10 @@ class _OnboardingState extends State<Onboarding> {
                   color: Colors.yellow.withOpacity(0.12),
                   pulseScale: 0.08,
                   duration: const Duration(milliseconds: 1500),
-                  child: _blinkingContainer(screenWidth * 0.6),
+                  child: _blinkingContainer(w * 60),
                 ),
 
-                SizedBox(height: screenHeight * 0.05),
+                SizedBox(height: h * 5),
 
                 /// Title
                 Text(
@@ -58,88 +59,75 @@ class _OnboardingState extends State<Onboarding> {
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: screenWidth * 0.07,
+                    fontSize: w * 7,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
 
-                SizedBox(height: screenHeight * 0.01),
+                SizedBox(height: h * 1),
 
                 /// Subtitle
                 Text(
                   "Free transfers to anyone, anywhere",
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.white70,
-                    fontSize: screenWidth * 0.04,
-                  ),
+                  style: TextStyle(color: Colors.white70, fontSize: w * 4),
                 ),
 
-                SizedBox(height: screenHeight * 0.015),
+                SizedBox(height: h * 2),
 
                 /// Dots
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    _horizontalDot(active: true, size: screenWidth),
-                    SizedBox(width: screenWidth * 0.02),
-                    _horizontalDot(active: false, size: screenWidth),
-                    SizedBox(width: screenWidth * 0.02),
-                    _horizontalDot(active: false, size: screenWidth),
+                    _horizontalDot(active: true, size: w),
+                    SizedBox(width: w * 2),
+                    _horizontalDot(active: false, size: w),
+                    SizedBox(width: w * 2),
+                    _horizontalDot(active: false, size: w),
                   ],
                 ),
 
-                SizedBox(height: screenHeight * 0.08),
+                SizedBox(height: h * 8),
 
                 /// Button
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.06),
-                  child: SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.greenAccent,
-                        padding: EdgeInsets.symmetric(
-                          vertical: screenHeight * 0.02,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(
-                            screenWidth * 0.03,
-                          ),
-                        ),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.greenAccent,
+                      padding: EdgeInsets.symmetric(vertical: h * 2),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(w * 3),
                       ),
-                      onPressed: () {},
-                      child: Shimmer.fromColors(
-                        baseColor: Colors.black,
-                        highlightColor: Colors.grey,
-                        child: Text(
-                          'Get Started',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: screenWidth * 0.05,
-                            fontWeight: FontWeight.bold,
-                          ),
+                    ),
+                    onPressed: () {},
+                    child: Shimmer.fromColors(
+                      baseColor: Colors.black,
+                      highlightColor: Colors.grey,
+                      child: Text(
+                        'Get Started',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: w * 5,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
                   ),
                 ),
 
-                SizedBox(height: screenHeight * 0.06),
+                SizedBox(height: h * 6),
 
                 /// Login Text
                 GestureDetector(
                   onTap: () {},
                   child: Text(
                     "Already have an account? Log In",
-                    style: TextStyle(
-                      color: Colors.white70,
-                      fontSize: screenWidth * 0.035,
-                    ),
+                    style: TextStyle(color: Colors.white70, fontSize: w * 3.5),
                   ),
                 ),
 
-                SizedBox(height: screenHeight * 0.05),
+                SizedBox(height: h * 5),
               ],
             ),
           ),
@@ -152,8 +140,8 @@ class _OnboardingState extends State<Onboarding> {
 /// Progress Bar
 Widget _progressBar({required bool active, required double width}) {
   return Container(
-    height: width * 0.02,
-    width: active ? width * 0.15 : width * 0.08,
+    height: width * 2,
+    width: active ? width * 15 : width * 8,
     decoration: BoxDecoration(
       color: active ? Colors.greenAccent : Colors.white24,
       borderRadius: BorderRadius.circular(10),
@@ -164,8 +152,8 @@ Widget _progressBar({required bool active, required double width}) {
 /// Dot
 Widget _horizontalDot({required bool active, required double size}) {
   return Container(
-    width: size * 0.02,
-    height: size * 0.02,
+    width: size * 2,
+    height: size * 2,
     decoration: BoxDecoration(
       shape: BoxShape.circle,
       color: active ? Colors.white : Colors.grey.withOpacity(0.3),
