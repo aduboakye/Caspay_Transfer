@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:money_transfer/onboarding/onboarding.dart';
+import 'package:money_transfer/phone_authentication/phone_authentication.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,7 +15,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(colorScheme: .fromSeed(seedColor: Colors.deepPurple)),
-      home: const Onboarding(),
+      home: const PhoneAuthentication(),
     );
   }
 }
