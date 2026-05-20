@@ -234,23 +234,21 @@ class _ProfilePageState extends State<ProfilePage> {
           if (MediaQuery.of(context).size.width > 700)
             LayoutBuilder(
               builder: (context, constraints) {
-                final isTwoColumn = constraints.maxWidth > 500;
-                return isTwoColumn
-                    ? Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            child: Column(
-                              children: [
-                                subscriptionCard(),
-                                const SizedBox(height: 20),
-                                settingsCard(),
-                              ],
-                            ),
+                final isThreeRow = constraints.maxWidth > 600;
+                return isThreeRow
+                    ? Center(
+                        child: ConstrainedBox(
+                          constraints: const BoxConstraints(maxWidth: 1400),
+                          child: Row(
+                            children: [
+                              Expanded(child: subscriptionCard()),
+                              const SizedBox(width: 20),
+                              Expanded(child: settingsCard()),
+                              const SizedBox(width: 20),
+                              Expanded(child: accountManagementCard()),
+                            ],
                           ),
-                          const SizedBox(width: 20),
-                          Expanded(child: accountManagementCard()),
-                        ],
+                        ),
                       )
                     : Column(
                         children: [
@@ -472,23 +470,27 @@ class _ProfilePageState extends State<ProfilePage> {
             const Divider(color: Colors.white24),
             const SizedBox(height: 10),
             Container(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(2),
               decoration: BoxDecoration(
                 color: Colors.yellow.withOpacity(0.08),
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: BorderRadius.circular(20),
               ),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Row(
-                    children: const [
-                      Icon(Icons.notifications, color: Colors.white),
-                      SizedBox(width: 12),
-                      Text(
-                        "Notifications",
-                        style: TextStyle(color: Colors.white, fontSize: 16),
-                      ),
-                    ],
+                  Expanded(
+                    child: Row(
+                      children: const [
+                        Icon(Icons.notifications, color: Colors.white),
+                        SizedBox(width: 2),
+                        Expanded(
+                          child: Text(
+                            "Notifications",
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(color: Colors.white, fontSize: 16),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                   Switch(
                     value: isNotificationOn,
@@ -511,8 +513,8 @@ class _ProfilePageState extends State<ProfilePage> {
   // ---------------- REUSABLE TILE ----------------
   Widget buildTile(IconData icon, String title, {bool isRed = false}) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 10),
-      padding: const EdgeInsets.all(16),
+      margin: const EdgeInsets.only(bottom: 5),
+      padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
         color: isRed
             ? Colors.red.withOpacity(0.12)
@@ -522,12 +524,17 @@ class _ProfilePageState extends State<ProfilePage> {
       child: Row(
         children: [
           Icon(icon, color: isRed ? Colors.red : Colors.white),
-          const SizedBox(width: 12),
-          Text(
-            title,
-            style: TextStyle(
-              color: isRed ? Colors.red : Colors.white,
-              fontSize: 16,
+
+          const SizedBox(width: 2),
+          Expanded(
+            child: Text(
+              title,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                color: isRed ? Colors.red : Colors.white,
+                fontSize: 16,
+              ),
             ),
           ),
         ],

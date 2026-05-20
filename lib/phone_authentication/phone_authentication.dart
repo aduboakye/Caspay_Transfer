@@ -98,34 +98,41 @@ Widget _tabletDesktopLayout(BuildContext context, BoxConstraints constraints) {
     body: Padding(
       padding: const EdgeInsets.all(40),
       child: isDesktop
-          ? Row(
-              children: [
-                /// LEFT SIDE
-                Expanded(
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        _icon(w),
-                        const SizedBox(height: 20),
-                        _title(w),
-                        const SizedBox(height: 10),
-                        _subtitle(w),
-                      ],
+          ? Center(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 1000),
+                child: Row(
+                  children: [
+                    /// LEFT SIDE
+                    Expanded(
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            _icon(w),
+                            const SizedBox(height: 20),
+                            _title(w),
+                            const SizedBox(height: 10),
+                            _subtitle(w),
+                          ],
+                        ),
+                      ),
                     ),
-                  ),
-                ),
 
-                /// RIGHT SIDE (FORM)
-                Expanded(
-                  child: Center(
-                    child: ConstrainedBox(
-                      constraints: const BoxConstraints(maxWidth: 500),
-                      child: _formSection(w),
+                    const SizedBox(width: 20),
+
+                    /// RIGHT SIDE
+                    Expanded(
+                      child: Center(
+                        child: ConstrainedBox(
+                          constraints: const BoxConstraints(maxWidth: 500),
+                          child: _formSection(w),
+                        ),
+                      ),
                     ),
-                  ),
+                  ],
                 ),
-              ],
+              ),
             )
           : Center(
               child: ConstrainedBox(
